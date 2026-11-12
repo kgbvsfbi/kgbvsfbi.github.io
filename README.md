@@ -11,10 +11,15 @@ index.html              # 스튜디오 메인 — 소개·Productions(앱 페이
 assets/site.css         # 처리방침 페이지 공통 스타일
 assets/favicon.svg      # 둥근 육각 파비콘
 assets/tessera-icon.png # 메인 Productions의 Tessera 아이콘(256 px)
+assets/tessera-card.jpg # 공유 링크 카드 그림(1200×630, 글자 없음 — 모든 언어 페이지가 같이 쓴다)
+assets/tessera-touch-icon.png # 공유 링크 페이지의 apple-touch-icon(180 px)
 hailstorm/index.html    # Hailstorm 앱 페이지 (support_url · marketing_url)
 hailstorm/privacy.html  # Hailstorm 개인정보 처리방침 (privacy_url)
 tessera/index.html      # Tessera 앱 페이지 (support_url · marketing_url)
 tessera/privacy.html    # Tessera 개인정보 처리방침 (privacy_url)
+tessera/get/index.html  # 공유 문장의 링크 — 영어 페이지, 기기별 스토어로 넘김 (kgbvsfbi/firstComMono#3148)
+tessera/get/<lang>/     # 같은 페이지의 언어별 판 — 카드 문구(OG)의 언어를 주소로 가른다, 목록은 앱 로케일 (#3176)
+tessera/get/get.js      # 위 페이지 전부의 스토어 이동(LIVE)과 브라우저 언어 페이지 이동
 ```
 
 URL은 `https://www.firstcomstudio.com/<app>/privacy.html`. 새 앱은 디렉터리 하나를 더하고 메인 Productions에 줄 하나를 더한다.
