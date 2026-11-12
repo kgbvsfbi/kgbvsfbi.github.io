@@ -11,7 +11,7 @@ index.html              # 스튜디오 메인 — 소개·Productions(앱 페이
 assets/site.css         # 처리방침 페이지 공통 스타일
 assets/favicon.svg      # 둥근 육각 파비콘
 assets/tessera-icon.png # 메인 Productions의 Tessera 아이콘(256 px)
-assets/tessera-card.jpg # 공유 링크 카드 그림(1200×630, 글자 없음 — 모든 언어 페이지가 같이 쓴다)
+assets/tessera-share-card.jpg # 공유 링크 카드 그림(1200×630, 실제로 반쯤 푼 판 — 모든 언어 페이지가 같이 쓴다)
 assets/tessera-touch-icon.png # 공유 링크 페이지의 apple-touch-icon(180 px)
 hailstorm/index.html    # Hailstorm 앱 페이지 (support_url · marketing_url)
 hailstorm/privacy.html  # Hailstorm 개인정보 처리방침 (privacy_url)
