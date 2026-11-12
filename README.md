@@ -19,7 +19,7 @@ tessera/index.html      # Tessera 앱 페이지 (support_url · marketing_url)
 tessera/privacy.html    # Tessera 개인정보 처리방침 (privacy_url)
 tessera/get/index.html  # 공유 문장의 링크 — 영어 페이지, 기기별 스토어로 넘김 (kgbvsfbi/firstComMono#3148)
 tessera/get/<lang>/     # 같은 페이지의 언어별 판 — 카드 문구(OG)의 언어를 주소로 가른다, 목록은 앱 로케일 (#3176)
-tessera/get/get.js      # 위 페이지 전부의 스토어 이동(LIVE)과 브라우저 언어 페이지 이동
+tessera/get/get.js      # 위 페이지 전부의 스토어 이동(LIVE)과 브라우저 언어 페이지 이동, `?c=<채널>`을 스토어 추적 값으로 (#3150)
 ```
 
 URL은 `https://www.firstcomstudio.com/<app>/privacy.html`. 새 앱은 디렉터리 하나를 더하고 메인 Productions에 줄 하나를 더한다.
