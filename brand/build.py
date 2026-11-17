@@ -4,7 +4,7 @@
 SVG·CSS는 이 스크립트가 뽑은 결과다. 결과 파일을 손으로 고치지 말고 여기를
 고친 뒤 다시 뽑는다.
 
-    python3 -m venv .venv && .venv/bin/pip install fonttools numpy pillow
+    python3 -m venv .venv && .venv/bin/pip install fonttools skia-pathops numpy pillow
     .venv/bin/python brand/build.py
 
 마크: 소문자 i를 줄기와 점으로 떼어 낸 모양. 줄기는 단정하게 서 있고, 점만
@@ -19,7 +19,7 @@ import os
 from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.pens.transformPen import TransformPen
 from fontTools.ttLib import TTFont
-from fontTools.varLib.instancer import instantiateVariableFont
+from fontTools.varLib.instancer import OverlapMode, instantiateVariableFont
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "svg")
@@ -76,7 +76,8 @@ def svg(view_box, body, width=None, height=None):
 
 def load_font():
     font = TTFont(FONT_FILE)
-    return instantiateVariableFont(font, {"wght": WEIGHT})
+    # 가변 글꼴의 윤곽은 서로 겹친다 — 굳힐 때 겹침을 지워야 채우기 규칙과 무관하게 빈틈이 없다(skia-pathops 필요).
+    return instantiateVariableFont(font, {"wght": WEIGHT}, overlap=OverlapMode.REMOVE)
 
 
 def wordmark_dot(gs, name, x):

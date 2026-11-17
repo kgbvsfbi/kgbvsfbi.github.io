@@ -11,7 +11,7 @@
 [`build.py`](build.py)가 정본이다. 마크 좌표, 팔레트, 글꼴·굵기·자간이 전부 그 안에 있다. `svg/`, `tokens.css`, `play/*.png`, `index.html`의 `<!-- brand:… -->` 구간은 이 스크립트가 뽑은 결과이므로 손으로 고치지 않는다. 고칠 때는 `build.py`를 고치고 다시 뽑는다.
 
 ```bash
-python3 -m venv .venv && .venv/bin/pip install fonttools numpy pillow
+python3 -m venv .venv && .venv/bin/pip install fonttools skia-pathops numpy pillow
 .venv/bin/python brand/build.py
 ```
 

@@ -22,7 +22,7 @@ OUT = os.path.join(HERE, "play")
 ICON = 512
 HEADER = (4096, 2304)
 # 고른 배치 — HEADER_LAYOUTS / ICON_THEMES의 키
-HEADER_LAYOUT = "center"
+HEADER_LAYOUT = "confetti-accent"
 HEADER_THEME = "light"
 ICON_THEME = "light"
 
@@ -222,12 +222,157 @@ def header_lockup(p, font):
     return shapes + words
 
 
-HEADER_LAYOUTS = {"center": header_center, "hop": header_hop, "lockup": header_lockup}
+def header_pattern(p, font, on_accent=False, center_lockup=False):
+    """바탕 전체에 작은 마크를 흐린 색으로 격자에 깔고, 가운데 마크 하나만 또렷하게.
+
+    단정함은 일정한 격자가, 장난은 칸마다 다른 점의 기울기와 높이가 맡는다.
+    가운데 둘레는 비워 마크가 숨 쉴 자리를 둔다. 배치는 시드로 고정한다.
+    데스크톱 웹은 가운데 가로 띠(약 2.6:1)만 보이고, 모바일 웹은 16:9 전체가 보인다(#3210 실측).
+    """
+    import random
+
+    W, H = HEADER
+    rnd = random.Random(3210)
+    d = build.DOT
+    if on_accent:
+        # 바탕을 강조색으로 꽉 채운 판 — 무늬는 같은 파랑의 진하고 옅은 톤, 가운데 마크는 반전색
+        bg = p["accent"]
+        stem_c = mix(bg, "#000000", 0.16)
+        dot_c = mix(bg, "#ffffff", 0.22)
+        center = {"ink": p["on-accent"], "accent": p["ink"]}
+    else:
+        bg = p["bg"]
+        stem_c = mix(bg, p["ink"], 0.08)
+        dot_c = mix(bg, p["accent"], 0.22)
+        center = p
+    cell = 300
+    small = 150  # 작은 마크 높이
+    cols, rows = W // cell + 2, H // cell + 2
+    x0 = (W - (cols - 1) * cell) / 2
+    y0 = (H - (rows - 1) * cell) / 2
+    out = []
+    for r in range(rows):
+        for c in range(cols):
+            cx = x0 + c * cell + (cell / 2 if r % 2 else 0)
+            cy = y0 + r * cell
+            rx, ry = (1750, 640) if center_lockup else (900, 720)
+            if ((cx - W / 2) / rx) ** 2 + ((cy - H / 2) / ry) ** 2 < 1:
+                continue
+            rot = rnd.choice((-24, -8, 0, 14, 14, 14, 28, 40))
+            lift = rnd.choice((0, 0, 0, 6, 14))
+            sh, _ = centered_mark(cx, cy, small, {"ink": stem_c, "accent": dot_c}, dot=(d["x"], d["y"] - lift, rot))
+            out += sh
+    if center_lockup:
+        return out + lockup_shapes(W / 2, H / 2, 2700, center, font)
+    main, _ = centered_mark(W / 2, H / 2, 1000, center)
+    return out + main
+
+
+def lockup_shapes(cx, cy, width, p, font):
+    """가로 조합(마크 + 워드마크)을 폭 width로 가운데에. 비율은 build.py의 lockup과 같다:
+    마크 전체 높이 = 대문자 높이 × 1.3, 줄기 바닥 = 글자 기준선, 사이 0.3em."""
+    s, d = build.STEM, build.DOT
+    upm = font["head"].unitsPerEm
+    cap_u = font["OS/2"].sCapHeight
+    span = s["y"] + s["h"] - d["y"]
+    k = cap_u * 1.3 / span  # 마크 단위 → 글꼴 단위
+    l, t, r, b = mark_box()
+    mark_w_u = (r - l) * k
+    gap_u = 0.3 * upm
+    word_u = build.wordmark_width(font)
+    P = width / (mark_w_u + gap_u + word_u)  # 글꼴 단위 → px
+    x0 = cx - width / 2
+    baseline = cy + (span * k * P) / 2 - (s["y"] + s["h"] - (s["y"] + s["h"])) * k * P
+    # 세로 가운데: 마크 위(점 위)~기준선 높이의 가운데를 cy에
+    top_u = (b - t) * k
+    baseline = cy + top_u * P / 2
+    scale = k * P
+    ox = x0 - l * scale
+    oy = baseline - b * scale
+    shapes = mark_shapes(ox, oy, scale, p["ink"], p["accent"])
+    words, _ = wordmark_shapes(font, x0 + (mark_w_u + gap_u) * P, baseline, P, p["ink"], p["accent"])
+    return shapes + words
+
+
+def header_lockup_accent(p, font):
+    """강조색 바탕 무늬 + 가운데 가로 조합(스튜디오 이름까지)."""
+    return header_pattern(p, font, on_accent=True, center_lockup=True)
+
+
+def header_pattern_accent(p, font):
+    """header_pattern을 강조색 바탕으로 — 다른 게임 회사 헤더 15곳이 모두 진한 바탕을 끝까지 채운다(#3210 조사)."""
+    return header_pattern(p, font, on_accent=True)
+
+
+def header_fill(p, font, kind):
+    """강조색 바탕 + 가운데 가로 조합. 바탕을 채우는 방식(kind)만 다르다.
+
+    confetti: 마크의 점(기운 둥근 사각)만 크기·기울기를 달리해 흩뿌린다.
+    giant: 큰 점 몇 개가 화면 가장자리에서 잘려 들어온다.
+    dots: 작은 원을 촘촘한 격자로 깔고, 몇 칸만 기운 사각 점으로 바꾼다.
+    """
+    import random
+
+    W, H = HEADER
+    rnd = random.Random(3210)
+    bg = p["accent"]
+    dark = mix(bg, "#000000", 0.18)
+    light = mix(bg, "#ffffff", 0.22)
+    center = {"ink": p["on-accent"], "accent": p["ink"]}
+    r_frac = build.DOT["r"] / build.DOT["s"]
+    out = []
+
+    def clear(x, y, rx=1700, ry=520):
+        return ((x - W / 2) / rx) ** 2 + ((y - H / 2) / ry) ** 2 < 1
+
+    def sq(x, y, size, rot, color):
+        out.append(([rrect(x - size / 2, y - size / 2, size, size, size * r_frac, rot)], color))
+
+    if kind == "confetti":
+        placed = []
+        tries = 0
+        while len(placed) < 70 and tries < 5000:
+            tries += 1
+            x, y = rnd.uniform(-80, W + 80), rnd.uniform(-80, H + 80)
+            size = rnd.choice((60, 80, 110, 150, 210))
+            if clear(x, y, 1800 + size, 560 + size):
+                continue
+            if any((x - a) ** 2 + (y - b) ** 2 < ((size + c) * 0.9) ** 2 for a, b, c in placed):
+                continue
+            placed.append((x, y, size))
+            sq(x, y, size, rnd.uniform(-35, 45), rnd.choice((dark, light, light)))
+    elif kind == "giant":
+        for x, y, size, rot, color in (
+            (260, 330, 900, 14, dark),
+            (W - 180, 2050, 1100, -18, dark),
+            (W - 520, 260, 420, 28, light),
+            (520, H - 240, 360, -10, light),
+            (W / 2 + 1500, H / 2 + 620, 160, 14, light),
+            (W / 2 - 1650, H / 2 - 560, 120, 40, light),
+        ):
+            sq(x, y, size, rot, color)
+    elif kind == "dots":
+        step = 128
+        for j in range(-1, H // step + 2):
+            for i in range(-1, W // step + 2):
+                x, y = i * step + step / 2, j * step + step / 2
+                if clear(x, y, 1850, 600):
+                    continue
+                if rnd.random() < 0.035:
+                    sq(x, y, 70, rnd.uniform(-20, 40), light)
+                else:
+                    r = 9
+                    out.append(([rrect(x - r, y - r, 2 * r, 2 * r, r)], dark))
+    return out + lockup_shapes(W / 2, H / 2, 2700, center, font)
+
+
+HEADER_LAYOUTS = {"center": header_center, "hop": header_hop, "lockup": header_lockup, "pattern": header_pattern, "pattern-accent": header_pattern_accent, "lockup-accent": header_lockup_accent, "confetti-accent": lambda p, f: header_fill(p, f, "confetti"), "giant-accent": lambda p, f: header_fill(p, f, "giant"), "dots-accent": lambda p, f: header_fill(p, f, "dots")}
 
 
 def header(layout, theme, font):
     p = build.PALETTE[theme]
-    return render(HEADER, p["bg"], HEADER_LAYOUTS[layout](p, font), ss=2)
+    bg = p["accent"] if layout.endswith("-accent") else p["bg"]
+    return render(HEADER, bg, HEADER_LAYOUTS[layout](p, font), ss=2)
 
 
 def save(img, path):
