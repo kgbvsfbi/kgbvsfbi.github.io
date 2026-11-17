@@ -8,10 +8,10 @@
 
 ## 정본
 
-[`build.py`](build.py)가 정본이다. 마크 좌표, 팔레트, 글꼴·굵기·자간이 전부 그 안에 있다. `svg/`와 `tokens.css`는 이 스크립트가 뽑은 결과이므로 손으로 고치지 않는다. 고칠 때는 `build.py`를 고치고 다시 뽑는다.
+[`build.py`](build.py)가 정본이다. 마크 좌표, 팔레트, 글꼴·굵기·자간이 전부 그 안에 있다. `svg/`, `tokens.css`, `play/*.png`, `index.html`의 `<!-- brand:… -->` 구간은 이 스크립트가 뽑은 결과이므로 손으로 고치지 않는다. 고칠 때는 `build.py`를 고치고 다시 뽑는다.
 
 ```bash
-python3 -m venv .venv && .venv/bin/pip install fonttools
+python3 -m venv .venv && .venv/bin/pip install fonttools numpy pillow
 .venv/bin/python brand/build.py
 ```
 
@@ -22,6 +22,11 @@ python3 -m venv .venv && .venv/bin/pip install fonttools
 | `svg/wordmark-{light,dark}.svg` | 워드마크만                                                  |
 | `svg/favicon.svg`               | 사이트 파비콘. OS 테마를 따른다                             |
 | `tokens.css`                    | 사이트 색 토큰                                              |
+| `svg/{mark,lockup}-themed.svg`  | 색 대신 CSS 변수를 쓴 판. `index.html`에 인라인으로 들어간다 |
+| `play/developer-icon.png`       | Play 개발자 아이콘 512×512                                  |
+| `play/header.png`               | Play 개발자 페이지 헤더 4096×2304. 배치는 [`play.py`](play.py) |
+
+Play 개발자 페이지의 광고 문구는 `play/promotional-text/<로케일>.txt`에 있다. 로케일 목록은 tessera가 지원하는 Android 로케일과 같고, 모두 140자 이하다. Play Console에는 API가 없어서 손으로 넣는다.
 
 글꼴은 [Sora](https://github.com/sora-xor/sora-font)이고, 라이선스는 SIL OFL 1.1이다([`fonts/OFL.txt`](fonts/OFL.txt)).
 

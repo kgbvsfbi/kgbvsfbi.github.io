@@ -4,7 +4,7 @@
 SVG·CSS는 이 스크립트가 뽑은 결과다. 결과 파일을 손으로 고치지 말고 여기를
 고친 뒤 다시 뽑는다.
 
-    python3 -m venv .venv && .venv/bin/pip install fonttools
+    python3 -m venv .venv && .venv/bin/pip install fonttools numpy pillow
     .venv/bin/python brand/build.py
 
 마크: 소문자 i를 줄기와 점으로 떼어 낸 모양. 줄기는 단정하게 서 있고, 점만
@@ -79,6 +79,35 @@ def load_font():
     return instantiateVariableFont(font, {"wght": WEIGHT})
 
 
+def wordmark_dot(gs, name, x):
+    """워드마크 i 점의 (가운데 x, 가운데 y, 크기, 모서리) — 글꼴 단위, y는 아래로.
+
+    줄기 폭을 재서 마크와 같은 비율로 얹되, 글자 안에서는 점을 줄이고 줄기에
+    붙인다. 오른쪽 치우침도 마크보다 줄여 옆 글자(r)와 겹치지 않게 한다.
+    """
+    from fontTools.pens.boundsPen import BoundsPen
+
+    bp = BoundsPen(gs)
+    gs[name].draw(bp)
+    x0, _, x1, top = bp.bounds
+    stem_w = x1 - x0
+    k = stem_w / STEM["w"]  # 마크 단위 → 글꼴 단위
+    size = stem_w * 1.08
+    gap = stem_w * 0.22
+    stem_cx = x + (x0 + x1) / 2
+    cx = stem_cx + (DOT["x"] + DOT["s"] / 2 - (STEM["x"] + STEM["w"] / 2)) * k * 0.3
+    cy = -(top + gap + size / 2)
+    return cx, cy, size, DOT["r"] * k
+
+
+def wordmark_width(font):
+    """워드마크 폭 — 글꼴 단위."""
+    cmap, hmtx = font.getBestCmap(), font["hmtx"]
+    first_i = TEXT.index("i")
+    names = ["dotlessi" if i == first_i else cmap[ord(c)] for i, c in enumerate(TEXT)]
+    return sum(hmtx[n][0] for n in names) + TRACKING * font["head"].unitsPerEm * (len(TEXT) - 1)
+
+
 def wordmark_paths(font, ink, accent):
     """TEXT를 윤곽 경로로 바꾼다. 반환: (svg 본문, 폭, 위쪽 y, 아래쪽 y) — 글꼴 단위, y는 아래로."""
     cmap = font.getBestCmap()
@@ -98,22 +127,7 @@ def wordmark_paths(font, ink, accent):
         if d:
             parts.append(f'<path d="{d}" fill="{ink}"/>')
         if idx == first_i:
-            # 줄기 폭과 위치를 재서 마크와 같은 비율로 점을 얹는다.
-            from fontTools.pens.boundsPen import BoundsPen
-
-            bp = BoundsPen(gs)
-            gs[name].draw(bp)
-            x0, _, x1, top = bp.bounds
-            stem_w = x1 - x0
-            k = stem_w / STEM["w"]  # 마크 단위 → 글꼴 단위
-            # 글자 안에서는 마크보다 점을 줄이고 줄기에 붙인다 — 글자 i의 점 자리에 맞춘다.
-            size = stem_w * 1.08
-            gap = stem_w * 0.22
-            stem_cx = x + (x0 + x1) / 2
-            # 마크보다 오른쪽 치우침을 줄인다 — 옆 글자(r)와 겹치지 않게.
-            cx = stem_cx + (DOT["x"] + DOT["s"] / 2 - (STEM["x"] + STEM["w"] / 2)) * k * 0.3
-            cy = -(top + gap + size / 2)
-            dot = (cx, cy, size, DOT["r"] * k)
+            dot = wordmark_dot(gs, name, x)
         x += hmtx[name][0] + (track if idx < len(TEXT) - 1 else 0)
     cx, cy, size, r = dot
     parts.append(
@@ -216,6 +230,11 @@ def main():
     with open(os.path.join(HERE, "tokens.css"), "w") as f:
         f.write(css)
     written.append("../tokens.css")
+
+    # Play 개발자 페이지 자료(PNG) — 배치는 play.py
+    import play
+
+    written += play.main(font)
     print("\n".join(written))
 
 
