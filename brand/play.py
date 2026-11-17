@@ -22,7 +22,7 @@ OUT = os.path.join(HERE, "play")
 ICON = 512
 HEADER = (4096, 2304)
 # 고른 배치 — HEADER_LAYOUTS / ICON_THEMES의 키
-HEADER_LAYOUT = "hop"
+HEADER_LAYOUT = "center"
 HEADER_THEME = "light"
 ICON_THEME = "light"
 
