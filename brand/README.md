@@ -1,6 +1,6 @@
 # FirstCom Studio BI
 
-스튜디오 이름으로 나가는 모든 표면은 이 BI를 쓴다. 사이트, Play·App Store 개발자 페이지, 스토어의 스튜디오 표기, 스튜디오 메일이 여기에 든다. 게임(Tessera, Hailstorm)의 아이콘과 화면은 각 게임의 얼굴이라 이 BI를 따르지 않는다.
+스튜디오 이름으로 나가는 모든 표면은 이 BI를 쓴다. 사이트, Play·App Store 개발자 페이지, YouTube 채널, 스토어의 스튜디오 표기, 스튜디오 메일이 여기에 든다. 게임(Tessera, Hailstorm)의 아이콘과 화면은 각 게임의 얼굴이라 이 BI를 따르지 않는다.
 
 - **마크**: 소문자 i를 줄기와 점으로 나눈 모양이다. 줄기는 단정하게 서 있고, 점만 강조색 둥근 사각으로 떠올라 기울어 있다. 단정한 틀에 장난스러운 한 수를 더한다는 기준에서 나왔다.
 - **워드마크**: 공식 표기 `FirstCom Studio`를 Sora Bold로 쓰고, First의 i 점만 마크의 점으로 바꾼다. 표기를 바꾸지 않는다(소문자, 줄임 금지).
@@ -25,6 +25,7 @@ python3 -m venv .venv && .venv/bin/pip install fonttools skia-pathops numpy pill
 | `svg/{mark,lockup}-themed.svg`  | 색 대신 CSS 변수를 쓴 판. `index.html`에 인라인으로 들어간다 |
 | `play/developer-icon.png`       | Play 개발자 아이콘 512×512                                  |
 | `play/header.png`               | Play 개발자 페이지 헤더 4096×2304. 배치는 [`play.py`](play.py) |
+| `youtube/banner.png`            | YouTube 채널 배너 2560×1440. Play 헤더와 같은 배치를 모든 기기에 보이는 가운데 1235×338 안에 줄였다 |
 
 Play 개발자 페이지의 광고 문구는 `play/promotional-text/<로케일>.txt`에 있다. 로케일 목록은 tessera가 지원하는 Android 로케일과 같고, 모두 140자 이하다. Play Console에는 API가 없어서 손으로 넣는다.
 
