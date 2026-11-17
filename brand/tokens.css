@@ -1,0 +1,4 @@
+/* brand/build.py가 뽑는다 — 손으로 고치지 말 것 */
+:root { --bg: #f6f5f1; --surface: #ffffff; --line: #e2e0da; --ink: #16171a; --ink-2: #5c5d63; --ink-3: #94959b; --accent: #3355ff; --on-accent: #ffffff; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #121316; --surface: #1b1c20; --line: #2a2b30; --ink: #f1f0ec; --ink-2: #a9aab0; --ink-3: #6f7077; --accent: #7d93ff; --on-accent: #0d0f1a; } }
+:root[data-theme="dark"] { --bg: #121316; --surface: #1b1c20; --line: #2a2b30; --ink: #f1f0ec; --ink-2: #a9aab0; --ink-3: #6f7077; --accent: #7d93ff; --on-accent: #0d0f1a; }

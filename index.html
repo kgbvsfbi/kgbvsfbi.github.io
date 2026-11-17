@@ -4,103 +4,106 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>FirstCom Studio</title>
-    <meta name="description" content="FirstCom Studio — An independent game studio making mobile games for iOS and Android." />
+    <meta name="description" content="FirstCom Studio — An independent studio making mobile games for iOS and Android." />
     <meta property="og:title" content="FirstCom Studio" />
     <meta property="og:site_name" content="FirstCom Studio" />
     <meta property="og:url" content="https://www.firstcomstudio.com/" />
     <meta name="color-scheme" content="light dark" />
-    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="brand/svg/favicon.svg" type="image/svg+xml" />
     <link rel="canonical" href="https://www.firstcomstudio.com/" />
+    <!-- 색·마크·글꼴은 brand/(build.py가 정본)에서 온다. 여기서 색을 새로 정하지 않는다. -->
+    <link rel="stylesheet" href="brand/tokens.css" />
     <style>
-      :root { --bg: #f3efe6; --bg-2: #eae4d7; --surface: #faf7f0; --surface-hi: #ffffff; --line: #dcd4c4; --ink: #1d1b17; --ink-2: #57524a; --ink-3: #958d80; --brand: #b4532f; --brand-hi: #d9845f; --on-brand: #fff8f0; --clue: #e3dac6; --mine: #2b2823; --shade: rgba(60, 48, 30, 0.12); --dev: #a87a22; }
-      @media (prefers-color-scheme: dark) {
-        :root:not([data-theme="light"]) { --bg: #13120f; --bg-2: #0d0c0a; --surface: #1f1d19; --surface-hi: #2c2924; --line: #2d2a24; --ink: #eee7d8; --ink-2: #bdb4a4; --ink-3: #7d766a; --brand: #da7a52; --brand-hi: #f0a27f; --on-brand: #1a0f09; --clue: #2a2620; --mine: #4e473e; --shade: rgba(0, 0, 0, 0.45); --dev: #d9aa4c; }
-      }
-      :root[data-theme="dark"] { --bg: #13120f; --bg-2: #0d0c0a; --surface: #1f1d19; --surface-hi: #2c2924; --line: #2d2a24; --ink: #eee7d8; --ink-2: #bdb4a4; --ink-3: #7d766a; --brand: #da7a52; --brand-hi: #f0a27f; --on-brand: #1a0f09; --clue: #2a2620; --mine: #4e473e; --shade: rgba(0, 0, 0, 0.45); --dev: #d9aa4c; }
+      @font-face { font-family: Sora; src: url("brand/fonts/Sora%5Bwght%5D.ttf") format("truetype"); font-weight: 100 800; font-display: swap; }
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
       html { scroll-behavior: smooth; }
-      body { background: var(--bg); color: var(--ink); font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; min-height: 100vh; }
-      a { color: inherit; }
-      .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 0; }
-      .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -0.01em; text-decoration: none; }
-      .logo svg { width: 26px; height: 26px; }
-      .nav ul { list-style: none; display: flex; gap: 20px; font-size: 0.92rem; color: var(--ink-2); }
-      .nav ul a { text-decoration: none; }
-      .nav ul a:hover { color: var(--brand); }
-      .eyebrow { font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
-      .badge { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
-      .badge.live { color: var(--brand); }
-      .badge.dev { color: var(--dev); }
-      .hexicon { display: block; flex: none; filter: drop-shadow(0 4px 10px var(--shade)); }
-      .wrap { max-width: 960px; margin: 0 auto; padding: 0 16px; }
-      .hero { padding: 80px 0 72px; }
-      .hero h1 { font-size: clamp(2.1rem, 6.5vw, 3.6rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.08; max-width: 14em; margin-top: 14px; }
-      .hero h1 em { font-style: normal; color: var(--brand); }
+      body { background: var(--bg); color: var(--ink); font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; min-height: 100vh; }
+      a { color: inherit; text-decoration: none; }
+      h1, h3, .m { font-family: Sora, -apple-system, sans-serif; letter-spacing: -0.035em; }
+      .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+      .nav { display: flex; justify-content: space-between; align-items: center; padding: 22px 0; }
+      .lockup { height: 30px; width: auto; display: block; }
+      .navmk { display: none; width: 34px; height: 34px; }
+      .nav ul { list-style: none; display: flex; gap: 24px; font-size: 0.92rem; color: var(--ink-2); }
+      .nav ul a:hover { color: var(--accent); }
+      /* 장난스러운 한 수: 마크의 점이 한 번 뛴다 */
+      @keyframes hop { 40% { translate: 0 -10px; } }
+      .brand:hover rect:last-of-type, .hero:hover .heromk rect:last-of-type { animation: hop 0.5s cubic-bezier(0.3, 1.6, 0.5, 1); }
+      .hero { padding: 72px 0 80px; text-align: center; }
+      .heromk { width: 180px; height: 180px; display: block; margin: 0 auto; }
+      .hero h1 { margin-top: 28px; font-size: clamp(2rem, 6vw, 3.6rem); line-height: 1.08; font-weight: 700; text-wrap: balance; }
+      .hero p { margin: 18px auto 0; color: var(--ink-2); font-size: 1.08rem; max-width: 30em; }
       section { padding: 56px 0; border-top: 1px solid var(--line); }
-      section > .eyebrow { margin-bottom: 12px; }
-      .row { display: grid; grid-template-columns: 40px 88px 1fr auto 32px; align-items: center; gap: 24px; padding: 20px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+      .lab { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+      .lab::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--accent); rotate: 14deg; }
+      .row { display: grid; grid-template-columns: 80px 1fr auto; gap: 22px; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--line); }
       .row:last-child { border-bottom: 0; }
-      .no { color: var(--ink-3); font-variant-numeric: tabular-nums; font-weight: 600; }
-      .row h3 { font-size: clamp(1.4rem, 4vw, 2rem); letter-spacing: -0.02em; }
-      .arrow { font-size: 1.4rem; color: var(--ink-3); transition: transform 0.15s, color 0.15s; }
-      .row:hover .arrow { transform: translateX(4px); color: var(--brand); }
-      .pts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 8px; }
-      .pt { border-top: 2px solid var(--ink); padding-top: 14px; }
-      .pt h3 { font-size: 1.05rem; margin-bottom: 6px; }
+      .row h3 { font-size: clamp(1.4rem, 4vw, 1.9rem); }
+      .row p { color: var(--ink-2); }
+      .tag { font-size: 0.75rem; font-weight: 700; color: var(--accent); }
+      .appicon { width: 80px; height: 80px; border-radius: 20px; display: block; }
+      .arrow { color: var(--ink-3); font-size: 1.4rem; transition: translate 0.15s, color 0.15s; }
+      .row:hover .arrow { translate: 4px 0; color: var(--accent); }
+      /* 공사 중 카드 — 테이프 띠, 점이 계속 튀는 아이콘 자리 */
+      .wip { position: relative; margin-top: 12px; padding: 30px 20px 20px; border: 1px dashed var(--ink-3); border-radius: 20px; border-bottom-style: dashed; overflow: hidden; }
+      .wip::before { content: ""; position: absolute; inset: 0 0 auto; height: 10px; background: repeating-linear-gradient(-45deg, var(--accent) 0 12px, var(--ink) 12px 24px); }
+      .wip .tag { color: var(--ink-2); display: inline-flex; gap: 6px; align-items: center; }
+      .wip .tag::before { content: ""; width: 7px; height: 7px; border-radius: 2px; background: var(--accent); animation: blink 1.2s steps(1) infinite; }
+      @keyframes blink { 50% { opacity: 0; } }
+      .slot { width: 80px; height: 80px; border-radius: 20px; border: 2px dashed var(--ink-3); display: grid; place-items: center; }
+      .slot svg { width: 56px; height: 56px; }
+      .slot rect:last-of-type { animation: bounce 1s cubic-bezier(0.3, 1.6, 0.5, 1) infinite; }
+      @keyframes bounce { 0%, 100% { translate: 0 0; } 45% { translate: 0 -12px; } }
+      .pts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+      .pt h3 { font-size: 1.08rem; margin-bottom: 6px; }
       .pt p { color: var(--ink-2); font-size: 0.95rem; }
-      .foot { border-top: 1px solid var(--line); padding: 48px 0 56px; }
-      .foot .mail { font-size: 1.35rem; font-weight: 700; margin-top: 6px; overflow-wrap: anywhere; }
-      .foot .mail a { text-decoration: none; }
-      .foot .mail a:hover { color: var(--brand); }
-      .foot .copy { margin-top: 24px; color: var(--ink-3); font-size: 0.85rem; }
+      footer { border-top: 1px solid var(--line); padding: 56px 0 64px; }
+      footer .m { font-weight: 700; font-size: clamp(1.3rem, 4vw, 2rem); line-height: 1.2; overflow-wrap: anywhere; }
+      footer .m:hover { color: var(--accent); }
+      footer small { display: block; margin-top: 24px; color: var(--ink-3); }
+      @media (prefers-reduced-motion: reduce) { .brand:hover rect, .hero:hover rect, .slot rect, .wip .tag::before { animation: none !important; } }
       @media (max-width: 640px) {
-        .hero { padding: 40px 0 44px; }
-        section { padding: 40px 0; }
-        .row { grid-template-columns: 64px 1fr 24px; gap: 4px 16px; }
-        .row .no { display: none; }
-        .row svg { width: 64px; height: 64px; grid-row: span 2; }
-        .row h3 { align-self: end; }
-        .row .badge { grid-column: 2; grid-row: 2; justify-self: start; align-self: start; }
-        .row .arrow { grid-column: 3; grid-row: 1 / span 2; }
+        .hero { padding: 40px 0 52px; }
+        .heromk { width: 120px; height: 120px; }
+        .row { grid-template-columns: 64px 1fr auto; gap: 4px 16px; }
+        .appicon, .slot { width: 64px; height: 64px; border-radius: 16px; }
+        .slot svg { width: 44px; height: 44px; }
         .pts { grid-template-columns: 1fr; gap: 20px; }
+        .nav ul { gap: 14px; font-size: 0.86rem; }
+        .lockup { height: 24px; }
       }
       @media (max-width: 480px) {
-        .logo { white-space: nowrap; }
-        .logo span { display: none; }
-        .nav ul { gap: 16px; font-size: 0.88rem; }
+        .lockup { display: none; }
+        .navmk { display: block; }
       }
     </style>
   </head>
   <body>
-    <svg width="0" height="0" style="position: absolute" aria-hidden="true"><defs><path id="hex" d="M-9.53 -44.50Q0.00 -50.00 9.53 -44.50L33.77 -30.50Q43.30 -25.00 43.30 -14.00L43.30 14.00Q43.30 25.00 33.77 30.50L9.53 44.50Q0.00 50.00 -9.53 44.50L-33.77 30.50Q-43.30 25.00 -43.30 14.00L-43.30 -14.00Q-43.30 -25.00 -33.77 -30.50Z" /></defs></svg>
     <div class="wrap">
       <nav class="nav">
-        <a class="logo" href="./" aria-label="FirstCom Studio"><svg viewBox="-50 -50 100 100" aria-hidden="true"><use href="#hex" fill="var(--brand)" /></svg><span>FirstCom Studio</span></a>
-        <ul><li><a href="#productions">Productions</a></li><li><a href="#studio">Studio</a></li><li><a href="#contact">Contact</a></li></ul>
+        <a class="brand" href="./" aria-label="FirstCom Studio"><!-- brand:lockup lockup --><svg class="lockup" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="-20 -973 8767 993"><g transform="translate(-439.8 -1041.6) scale(11.5732)"><rect x="38" y="44" width="22" height="46" rx="11" fill="var(--ink)"/><rect x="48" y="8" width="28" height="28" rx="8" fill="var(--accent)" transform="rotate(14 62 22)"/></g><g transform="translate(774.2 0)"><path d="M82.0 0V-730H246.0V0ZM226.0 -293.5V-429.5L507.5 -429.75V-293.75ZM226.0 -594V-730H520.0V-594Z" fill="var(--ink)"/><path d="M623.5 0.0V-547.5H784.0V0ZM550.5 -429.5V-547.5H784.0V-429.5Z" fill="var(--ink)"/><path d="M896.5 0.0V-547.5H1023.5V-312.5H1021.0Q1021.0 -428.75 1070.25 -491.875Q1119.5 -555.0 1213.5 -555.0H1234.5V-416.5H1194.5Q1128.75 -416.5 1092.875 -381.125Q1057.0 -345.75 1057.0 -279.25V0Z" fill="var(--ink)"/><path d="M1490.5 17.5Q1374.25 17.5 1308.125 -30.875Q1242.0 -79.25 1237.75 -166.25H1380.25Q1383.75 -139.75 1411.375 -119.375Q1439.0 -99 1493.5 -99.0Q1535.75 -99.0 1563.375 -113.25Q1591.0 -127.5 1591.0 -154.75Q1591.0 -178.75 1569.75 -193.5Q1548.5 -208.25 1494.75 -213.5L1451.75 -218.0Q1353.25 -228.25 1303.75 -272.875Q1254.25 -317.5 1254.25 -387.75Q1254.25 -446.25 1283.25 -485.0Q1312.25 -523.75 1363.5 -543.625Q1414.75 -563.5 1480.75 -563.5Q1586.5 -563.5 1651.5 -517.125Q1716.5 -470.75 1720.0 -382.75H1577.5Q1574.25 -409.5 1549.875 -428.25Q1525.5 -447.0 1479.25 -447.0Q1442.0 -447 1420.125 -433.0Q1398.25 -419.0 1398.25 -395.25Q1398.25 -372.0 1417.25 -360.0Q1436.25 -348.0 1478.75 -343.0L1521.75 -338.5Q1622.75 -328.0 1678.875 -282.75Q1735.0 -237.5 1735.0 -162.25Q1735.0 -107 1705.0 -66.625Q1675.0 -26.25 1620.125 -4.375Q1565.25 17.5 1490.5 17.5Z" fill="var(--ink)"/><path d="M2052.75 7.5Q1970.25 7.5 1919.25 -13.25Q1868.25 -34.0 1844.375 -82.625Q1820.5 -131.25 1820.5 -214.25L1821.25 -696.0H1970.25L1969.5 -207.5Q1969.5 -169.0 1990.0 -148.5Q2010.5 -128.0 2049.0 -128H2129.5V7.5ZM1737.5 -430.5V-547.5H2129.5V-430.5Z" fill="var(--ink)"/><path d="M2547.0 19.5Q2447.75 19.5 2376.875 -15.125Q2306.0 -49.75 2260.75 -106.125Q2215.5 -162.5 2194.0 -228.375Q2172.5 -294.25 2172.5 -356.0V-378.0Q2172.5 -446.25 2194.5 -512.625Q2216.5 -579.0 2262.125 -633.0Q2307.75 -687.0 2377.5 -719.25Q2447.25 -751.5 2541.75 -751.5Q2641.25 -751.5 2716.875 -714.875Q2792.5 -678.25 2838.0 -612.375Q2883.5 -546.5 2891.75 -459.0H2727.25Q2720.0 -503 2694.75 -534.125Q2669.5 -565.25 2630.375 -581.875Q2591.25 -598.5 2541.75 -598.5Q2493.25 -598.5 2455.125 -581.625Q2417.0 -564.75 2391.25 -534.0Q2365.5 -503.25 2352.0 -460.75Q2338.5 -418.25 2338.5 -366.0Q2338.5 -314.5 2352.0 -272.0Q2365.5 -229.5 2392.25 -198.25Q2419.0 -167 2457.75 -150.25Q2496.5 -133.5 2547.0 -133.5Q2623.0 -133.5 2675.375 -170.75Q2727.75 -208.0 2738.75 -273.0H2903.25Q2894.0 -192.75 2849.375 -126.25Q2804.75 -59.75 2728.375 -20.125Q2652.0 19.5 2547.0 19.5Z" fill="var(--ink)"/><path d="M3235.25 19.5Q3163.0 19.5 3107.0 -3.0Q3051.0 -25.5 3012.25 -64.625Q2973.5 -103.75 2953.5 -154.25Q2933.5 -204.75 2933.5 -261.0V-283.5Q2933.5 -341.25 2954.375 -392.625Q2975.25 -444.0 3014.5 -483.125Q3053.75 -522.25 3109.75 -544.625Q3165.75 -567.0 3235.25 -567.0Q3305.5 -567.0 3361.125 -544.625Q3416.75 -522.25 3456.0 -483.125Q3495.25 -444.0 3516.125 -392.625Q3537.0 -341.25 3537.0 -283.5V-261Q3537.0 -204.75 3517.0 -154.25Q3497.0 -103.75 3458.25 -64.625Q3419.5 -25.5 3363.5 -3.0Q3307.5 19.5 3235.25 19.5ZM3235.25 -116.0Q3281.75 -116.0 3313.0 -136.125Q3344.25 -156.25 3360.375 -191.875Q3376.5 -227.5 3376.5 -272.25Q3376.5 -318.75 3359.875 -354.375Q3343.25 -390.0 3311.625 -410.75Q3280.0 -431.5 3235.25 -431.5Q3190.75 -431.5 3159.0 -410.75Q3127.25 -390.0 3110.625 -354.375Q3094.0 -318.75 3094.0 -272.25Q3094.0 -227.5 3110.125 -191.875Q3126.25 -156.25 3157.875 -136.125Q3189.5 -116.0 3235.25 -116.0Z" fill="var(--ink)"/><path d="M3613.5 0.0V-547.5H3740.5V-311.75H3731.5Q3731.5 -395.75 3752.75 -451.75Q3774.0 -507.75 3815.75 -536.375Q3857.5 -565.0 3919.0 -565H3926.0Q3988.25 -565.0 4029.75 -536.375Q4071.25 -507.75 4092.375 -451.75Q4113.5 -395.75 4113.5 -311.75H4075.0Q4075.0 -395.75 4096.375 -451.75Q4117.75 -507.75 4159.625 -536.375Q4201.5 -565.0 4263.0 -565H4270.0Q4332.25 -565.0 4374.625 -536.375Q4417.0 -507.75 4439.0 -451.75Q4461.0 -395.75 4461.0 -311.75V0H4300.5V-320.75Q4300.5 -365.5 4277.125 -393.5Q4253.75 -421.5 4211.0 -421.5Q4167.75 -421.5 4142.625 -393.0Q4117.5 -364.5 4117.5 -317.75V0.0H3957.0V-320.75Q3957.0 -365.5 3933.625 -393.5Q3910.25 -421.5 3867.5 -421.5Q3824.25 -421.5 3799.125 -393.0Q3774.0 -364.5 3774.0 -317.75V0Z" fill="var(--ink)"/><path d="M5000.25 19.5Q4901.0 19.5 4832.875 -12.0Q4764.75 -43.5 4729.625 -98.375Q4694.5 -153.25 4694.5 -224.0H4854.0Q4854.0 -196.25 4869.25 -171.875Q4884.5 -147.5 4916.625 -133.0Q4948.75 -118.5 5000.25 -118.5Q5046.0 -118.5 5077.125 -130.875Q5108.25 -143.25 5124.125 -164.625Q5140.0 -186 5140.0 -214Q5140.0 -249.25 5110.0 -269.75Q5080.0 -290.25 5013.25 -295.75L4957.75 -300.5Q4848.75 -310.0 4784.0 -368.75Q4719.25 -427.5 4719.25 -524.5Q4719.25 -595.25 4752.5 -646.0Q4785.75 -696.75 4846.0 -724.125Q4906.25 -751.5 4987.75 -751.5Q5074.25 -751.5 5135.625 -722.0Q5197.0 -692.5 5229.875 -639.0Q5262.75 -585.5 5262.75 -514.0H5103.25Q5103.25 -540.75 5090.125 -563.5Q5077.0 -586.25 5051.375 -599.875Q5025.75 -613.5 4987.75 -613.5Q4951.75 -613.5 4927.5 -601.625Q4903.25 -589.75 4891.0 -569.375Q4878.75 -549.0 4878.75 -524.5Q4878.75 -493.5 4900.75 -470.75Q4922.75 -448.0 4973.25 -443.75L5028.75 -439.0Q5109.0 -432.25 5169.875 -404.5Q5230.75 -376.75 5265.125 -329.375Q5299.5 -282.0 5299.5 -214.0Q5299.5 -144.0 5263.125 -91.25Q5226.75 -38.5 5159.875 -9.5Q5093.0 19.5 5000.25 19.5Z" fill="var(--ink)"/><path d="M5617.75 7.5Q5535.25 7.5 5484.25 -13.25Q5433.25 -34.0 5409.375 -82.625Q5385.5 -131.25 5385.5 -214.25L5386.25 -696.0H5535.25L5534.5 -207.5Q5534.5 -169.0 5555.0 -148.5Q5575.5 -128.0 5614.0 -128H5694.5V7.5ZM5302.5 -430.5V-547.5H5694.5V-430.5Z" fill="var(--ink)"/><path d="M5952.5 17.5Q5858.25 17.5 5806.875 -44.125Q5755.5 -105.75 5755.5 -230.25V-547.75H5916.0V-221.75Q5916.0 -178.25 5941.0 -152.125Q5966.0 -126 6008.25 -126.0Q6051.0 -126 6077.75 -152.875Q6104.5 -179.75 6104.5 -225.75V-547.75H6265.0V0H6138.0V-231.25H6148.5Q6148.5 -147.75 6127.125 -92.5Q6105.75 -37.25 6063.875 -9.875Q6022.0 17.5 5959.5 17.5Z" fill="var(--ink)"/><path d="M6603.5 18.0Q6545.75 18.0 6498.125 -3.0Q6450.5 -24.0 6415.75 -61.625Q6381.0 -99.25 6362.25 -150.0Q6343.5 -200.75 6343.5 -260.25V-282.75Q6343.5 -342.0 6361.375 -393.125Q6379.25 -444.25 6412.625 -482.625Q6446.0 -521 6493.125 -542.5Q6540.25 -564.0 6598.25 -564.0Q6663.75 -564.0 6711.875 -535.5Q6760.0 -507 6787.125 -451.5Q6814.25 -396.0 6816.75 -314.5L6775.25 -353.75V-730.0H6935.75V0.0H6808.75V-227.25H6830.75Q6828.25 -149.0 6798.75 -94.0Q6769.25 -39.0 6719.25 -10.5Q6669.25 18.0 6603.5 18.0ZM6643.5 -115.5Q6680.5 -115.5 6711.125 -132.25Q6741.75 -149.0 6760.5 -181.125Q6779.25 -213.25 6779.25 -258.0V-295.0Q6779.25 -338.75 6760.0 -368.625Q6740.75 -398.5 6710.0 -414.5Q6679.25 -430.5 6643.25 -430.5Q6603.0 -430.5 6571.5 -410.375Q6540.0 -390.25 6522.0 -354.625Q6504.0 -319 6504.0 -271.5Q6504.0 -224 6522.125 -189.0Q6540.25 -154.0 6571.875 -134.75Q6603.5 -115.5 6643.5 -115.5Z" fill="var(--ink)"/><path d="M7071.5 0.0V-547.5H7232.0V0ZM6998.5 -429.5V-547.5H7232.0V-429.5ZM7134.125 -602.0Q7089.0 -602 7067.5 -625.375Q7046.0 -648.75 7046.0 -685.25Q7046.0 -721.75 7067.589285714286 -745.125Q7089.178571428572 -768.5 7133.75 -768.5Q7179.25 -768.5 7200.375 -745.125Q7221.5 -721.75 7221.5 -685.25Q7221.5 -648.75 7200.375 -625.375Q7179.25 -602.0 7134.125 -602.0Z" fill="var(--ink)"/><path d="M7612.25 19.5Q7540.0 19.5 7484.0 -3.0Q7428.0 -25.5 7389.25 -64.625Q7350.5 -103.75 7330.5 -154.25Q7310.5 -204.75 7310.5 -261.0V-283.5Q7310.5 -341.25 7331.375 -392.625Q7352.25 -444.0 7391.5 -483.125Q7430.75 -522.25 7486.75 -544.625Q7542.75 -567.0 7612.25 -567.0Q7682.5 -567.0 7738.125 -544.625Q7793.75 -522.25 7833.0 -483.125Q7872.25 -444.0 7893.125 -392.625Q7914.0 -341.25 7914.0 -283.5V-261Q7914.0 -204.75 7894.0 -154.25Q7874.0 -103.75 7835.25 -64.625Q7796.5 -25.5 7740.5 -3.0Q7684.5 19.5 7612.25 19.5ZM7612.25 -116.0Q7658.75 -116.0 7690.0 -136.125Q7721.25 -156.25 7737.375 -191.875Q7753.5 -227.5 7753.5 -272.25Q7753.5 -318.75 7736.875 -354.375Q7720.25 -390.0 7688.625 -410.75Q7657.0 -431.5 7612.25 -431.5Q7567.75 -431.5 7536.0 -410.75Q7504.25 -390.0 7487.625 -354.375Q7471.0 -318.75 7471.0 -272.25Q7471.0 -227.5 7487.125 -191.875Q7503.25 -156.25 7534.875 -136.125Q7566.5 -116.0 7612.25 -116.0Z" fill="var(--ink)"/><rect x="582.6" y="-851.1" width="252.2" height="252.2" rx="84.9" fill="var(--accent)" transform="rotate(14 708.6 -725.0)"/></g></svg><!-- /brand:lockup --><!-- brand:mark navmk --><svg class="navmk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="44" width="22" height="46" rx="11" fill="var(--ink)"/><rect x="48" y="8" width="28" height="28" rx="8" fill="var(--accent)" transform="rotate(14 62 22)"/></svg><!-- /brand:mark --></a>
+        <ul><li><a href="#games">Games</a></li><li><a href="#studio">Studio</a></li><li><a href="#contact">Contact</a></li></ul>
       </nav>
       <header class="hero">
-        <p class="eyebrow">FirstCom Studio</p>
-        <h1>An independent studio making <em>mobile games</em> for iOS and Android.</h1>
+        <!-- brand:mark heromk --><svg class="heromk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="44" width="22" height="46" rx="11" fill="var(--ink)"/><rect x="48" y="8" width="28" height="28" rx="8" fill="var(--accent)" transform="rotate(14 62 22)"/></svg><!-- /brand:mark -->
+        <h1>Neatly made, fun to keep.</h1>
+        <p>FirstCom Studio is an independent studio making mobile games for iOS and Android.</p>
       </header>
-      <section id="productions">
-        <p class="eyebrow">Productions</p>
+      <section id="games">
+        <p class="lab">Games</p>
         <a class="row" href="tessera/">
-          <span class="no">01</span>
-          <svg class="hexicon" width="88" height="88" viewBox="-50 -50 100 100" aria-hidden="true"><clipPath id="hc0"><path d="M-9.53 -44.50Q0.00 -50.00 9.53 -44.50L33.77 -30.50Q43.30 -25.00 43.30 -14.00L43.30 14.00Q43.30 25.00 33.77 30.50L9.53 44.50Q0.00 50.00 -9.53 44.50L-33.77 30.50Q-43.30 25.00 -43.30 14.00L-43.30 -14.00Q-43.30 -25.00 -33.77 -30.50Z" /></clipPath><image href="assets/tessera-icon.png" x="-50" y="-50" width="100" height="100" preserveAspectRatio="xMidYMid slice" clip-path="url(#hc0)" /><use href="#hex" fill="none" stroke="var(--line)" stroke-width="1.5" /></svg>
-          <h3>Tessera</h3>
-          <span class="badge live">Out now</span>
+          <img class="appicon" src="assets/tessera-icon.png" alt="" width="80" height="80" />
+          <div><p class="tag">Out now</p><h3>Tessera</h3><p>Hex logic puzzles, and one daily puzzle everyone solves together.</p></div>
           <span class="arrow" aria-hidden="true">→</span>
         </a>
-        <a class="row" href="hailstorm/">
-          <span class="no">02</span>
-          <svg class="hexicon" width="88" height="88" viewBox="-50 -50 100 100" aria-hidden="true"><clipPath id="hc1"><path d="M-9.53 -44.50Q0.00 -50.00 9.53 -44.50L33.77 -30.50Q43.30 -25.00 43.30 -14.00L43.30 14.00Q43.30 25.00 33.77 30.50L9.53 44.50Q0.00 50.00 -9.53 44.50L-33.77 30.50Q-43.30 25.00 -43.30 14.00L-43.30 -14.00Q-43.30 -25.00 -33.77 -30.50Z" /></clipPath><use href="#hex" fill="var(--bg-2)" stroke="var(--line)" stroke-width="1.5" /><text x="0" y="9" text-anchor="middle" font-size="26" font-weight="800" fill="var(--ink-3)">H</text></svg>
-          <h3>Hailstorm</h3>
-          <span class="badge dev">In development</span>
+        <a class="row wip" href="hailstorm/">
+          <span class="slot"><!-- brand:mark wipmk --><svg class="wipmk" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="44" width="22" height="46" rx="11" fill="var(--ink)"/><rect x="48" y="8" width="28" height="28" rx="8" fill="var(--accent)" transform="rotate(14 62 22)"/></svg><!-- /brand:mark --></span>
+          <div><p class="tag">Under construction</p><h3>Hailstorm</h3><p>Something stormy is brewing. Hard hats on.</p></div>
           <span class="arrow" aria-hidden="true">→</span>
         </a>
       </section>
       <section id="studio">
-        <p class="eyebrow">Studio</p>
+        <p class="lab">Studio</p>
         <div class="pts">
           <div class="pt"><h3>Small by design</h3><p>A small team that designs, builds and ships every game itself.</p></div>
           <div class="pt"><h3>Made to last</h3><p>Games built to be played for years, updated long after launch.</p></div>
@@ -108,11 +111,11 @@
         </div>
       </section>
     </div>
-    <footer id="contact" class="foot">
+    <footer id="contact">
       <div class="wrap">
-        <p class="eyebrow">Contact</p>
-        <p class="mail"><a href="mailto:firstcomstudio@gmail.com">firstcomstudio@gmail.com</a></p>
-        <p class="copy">© 2026 FirstCom Studio</p>
+        <p class="lab">Contact</p>
+        <a class="m" href="mailto:firstcomstudio@gmail.com">firstcomstudio@gmail.com</a>
+        <small>© 2026 FirstCom Studio</small>
       </div>
     </footer>
   </body>
