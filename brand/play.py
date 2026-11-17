@@ -1,4 +1,4 @@
-"""Play 개발자 페이지 자료 — 개발자 아이콘 512×512, 헤더 4096×2304.
+"""Play 개발자 페이지 자료 — 개발자 아이콘 512×512, 헤더 4096×2304. 같은 배치로 YouTube 채널 배너 2560×1440도 뽑는다.
 
 build.py가 부른다. 도형·색·글꼴은 전부 build.py의 값을 쓰고, 여기에는 배치만 있다.
 SVG 렌더러 없이 Pillow로 직접 그린다: 도형을 다각형으로 펴서 크게 그린 뒤 줄여
@@ -21,6 +21,11 @@ OUT = os.path.join(HERE, "play")
 
 ICON = 512
 HEADER = (4096, 2304)
+# YouTube 채널 배너 — 모든 기기에 보이는 자리는 2560×1440 가운데 1235×338뿐이다(나머지는 TV·데스크톱에서만 보인다).
+# 가로 조합은 그 안에 여백을 두고 들어가야 휴대폰에서 잘리지 않는다(#3250 — Play 헤더를 그대로 올리면 양 끝이 잘렸다).
+YOUTUBE = (2560, 1440)
+YOUTUBE_SAFE = (1235, 338)
+YOUTUBE_OUT = os.path.join(HERE, "youtube")
 # 고른 배치 — HEADER_LAYOUTS / ICON_THEMES의 키
 HEADER_LAYOUT = "confetti-accent"
 HEADER_THEME = "light"
@@ -304,7 +309,7 @@ def header_pattern_accent(p, font):
     return header_pattern(p, font, on_accent=True)
 
 
-def header_fill(p, font, kind):
+def header_fill(p, font, kind, size=HEADER, lockup_w=2700):
     """강조색 바탕 + 가운데 가로 조합. 바탕을 채우는 방식(kind)만 다르다.
 
     confetti: 마크의 점(기운 둥근 사각)만 크기·기울기를 달리해 흩뿌린다.
@@ -313,7 +318,8 @@ def header_fill(p, font, kind):
     """
     import random
 
-    W, H = HEADER
+    W, H = size
+    k = lockup_w / 2700  # 비우는 가운데 둘레와 흩뿌리는 수는 헤더(가로 조합 2700px)를 기준으로 줄인다
     rnd = random.Random(3210)
     bg = p["accent"]
     dark = mix(bg, "#000000", 0.18)
@@ -323,7 +329,7 @@ def header_fill(p, font, kind):
     out = []
 
     def clear(x, y, rx=1700, ry=520):
-        return ((x - W / 2) / rx) ** 2 + ((y - H / 2) / ry) ** 2 < 1
+        return ((x - W / 2) / (rx * k)) ** 2 + ((y - H / 2) / (ry * k)) ** 2 < 1
 
     def sq(x, y, size, rot, color):
         out.append(([rrect(x - size / 2, y - size / 2, size, size, size * r_frac, rot)], color))
@@ -331,7 +337,8 @@ def header_fill(p, font, kind):
     if kind == "confetti":
         placed = []
         tries = 0
-        while len(placed) < 70 and tries < 5000:
+        count = round(70 * (W * H) / (HEADER[0] * HEADER[1]))
+        while len(placed) < count and tries < 5000:
             tries += 1
             x, y = rnd.uniform(-80, W + 80), rnd.uniform(-80, H + 80)
             size = rnd.choice((60, 80, 110, 150, 210))
@@ -363,7 +370,7 @@ def header_fill(p, font, kind):
                 else:
                     r = 9
                     out.append(([rrect(x - r, y - r, 2 * r, 2 * r, r)], dark))
-    return out + lockup_shapes(W / 2, H / 2, 2700, center, font)
+    return out + lockup_shapes(W / 2, H / 2, lockup_w, center, font)
 
 
 HEADER_LAYOUTS = {"center": header_center, "hop": header_hop, "lockup": header_lockup, "pattern": header_pattern, "pattern-accent": header_pattern_accent, "lockup-accent": header_lockup_accent, "confetti-accent": lambda p, f: header_fill(p, f, "confetti"), "giant-accent": lambda p, f: header_fill(p, f, "giant"), "dots-accent": lambda p, f: header_fill(p, f, "dots")}
@@ -375,6 +382,12 @@ def header(layout, theme, font):
     return render(HEADER, bg, HEADER_LAYOUTS[layout](p, font), ss=2)
 
 
+def youtube_banner(theme, font):
+    """Play 헤더와 같은 배치를 YouTube 배너 크기로 — 가로 조합은 모든 기기 자리 폭의 85%."""
+    p = build.PALETTE[theme]
+    return render(YOUTUBE, p["accent"], header_fill(p, font, "confetti", YOUTUBE, YOUTUBE_SAFE[0] * 0.85), ss=2)
+
+
 def save(img, path):
     img.convert("RGB").save(path, optimize=True)
     kb = os.path.getsize(path) / 1024
@@ -384,7 +397,9 @@ def save(img, path):
 
 def main(font):
     os.makedirs(OUT, exist_ok=True)
+    os.makedirs(YOUTUBE_OUT, exist_ok=True)
     return [
         save(icon(ICON_THEME), os.path.join(OUT, "developer-icon.png")),
         save(header(HEADER_LAYOUT, HEADER_THEME, font), os.path.join(OUT, "header.png")),
+        save(youtube_banner(HEADER_THEME, font), os.path.join(YOUTUBE_OUT, "banner.png")),
     ]
