@@ -9,7 +9,7 @@
 - 첫 화면의 판 화면: 로케일별 스토어 스크린샷(apps/tessera/fastlane/screenshots/<로케일>/69_02.png)
 - 바탕 무늬: App Store 헤더 그림(apps/tessera/fastlane/creative/header.png)의 양끝 무늬 띠
 - 영상: Play 미리보기 영상 링크(apps/tessera/fastlane/metadata/android/en-US/video.txt)
-스토어와 앱에 없는 짧은 이름표(LABELS)와 금요 특별판 이름 일부(FRIDAY)만 여기서 정한다.
+스토어와 앱에 없는 짧은 이름표(LABELS)만 여기서 정한다.
 
 결과는 tessera/index.html(영어), tessera/<lang>/index.html, tessera/style.css, tessera/img/다. 손으로 고치지 말고 이 스크립트를 고쳐
 다시 뽑는다. 브라우저 언어로 옮기는 동작은 tessera/lang.js다.
@@ -41,11 +41,6 @@ NATIVE = {"en": "English", "ar": "العربية", "de": "Deutsch", "es": "Espa�
           "id": "Bahasa Indonesia", "it": "Italiano", "ja": "日本語", "ko": "한국어", "nl": "Nederlands", "pl": "Polski",
           "pt-BR": "Português (Brasil)", "ru": "Русский", "th": "ไทย", "tr": "Türkçe", "vi": "Tiếng Việt", "zh-Hans": "简体中文", "zh-Hant": "繁體中文"}
 RTL = {"ar", "he"}
-
-# 금요 특별판 이름 — 앱의 금요일 이름은 `special.name`("Special")뿐이라, 수요 특별판 이름(`wednesday.name`)의 요일을 금요일
-# (`stats.specialFriday`)로 바꿔 만든다. 요일 낱말이 그대로 들어 있지 않은 언어만 수요 특별판과 같은 꼴로 여기에 적는다.
-FRIDAY = {"es": "Especial del viernes", "fr": "Spécial du vendredi", "it": "Speciale del venerdì", "ja": "金曜特別版", "ko": "금요 특별판",
-          "pl": "Specjalna piątkowa", "pt-BR": "Especial de sexta", "ru": "Особая пятницы", "vi": "Đặc biệt thứ Sáu"}
 
 # 스토어·앱 문구에 없는 이름표: 모드, 영상, 영상 단추, 앱의 다른 것, 문의, 처리방침
 LABELS = {
@@ -255,10 +250,7 @@ def headline(s):
 def strings(lang):
     loc = json.load(open(os.path.join(APP, "godot/locales", f"{lang}.json")))
     st = store(lang)
-    wed = loc["wednesday.name"]
-    fri = FRIDAY.get(lang) or wed.replace(loc["stats.specialWednesday"], loc["stats.specialFriday"])
-    assert fri != wed, lang
-    return loc, st, fri
+    return loc, st
 
 
 # ── 페이지 ───────────────────────────────────────────────────────────
@@ -271,7 +263,7 @@ PLAY = ('<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.18 23.76a2 2 0 
 
 
 def render(lang):
-    loc, st, fri = strings(lang)
+    loc, st = strings(lang)
     modes_l, watch_l, watch_cta, also_l, contact_l, privacy_l = LABELS[lang]
     items = [split_item(s) for s in st["items"]]
     rtl = lang in RTL
@@ -290,7 +282,7 @@ def render(lang):
 
     # 모드 — 스토어 설명의 데일리·레벨·그림·대결 줄(0·1·2·4번째)과 특별판 둘(앱 문구의 이름·규칙)
     rows = [(items[i][0], items[i][1], "") for i in (0, 1, 2, 4)]
-    rows += [(fri, loc["special.rule"], FIG["friday"]), (loc["wednesday.name"], loc["wednesday.rule"], FIG["wednesday"])]
+    rows += [(loc["friday.name"], loc["special.rule"], FIG["friday"]), (loc["wednesday.name"], loc["wednesday.rule"], FIG["wednesday"])]
     modes = "".join(f'<div class="row"><span class="no">{n:02d}</span><h3>{esc(h)}</h3><p>{esc(ltr_ranges(p, lang))}</p><span class="mini">{svg}</span></div>'
                     for n, (h, p, svg) in enumerate(rows, 1))
     # 앱의 다른 것 — 작품·통계·공유·힌트 줄(3·6·7·8번째). 순위(5번째)는 Game Center 이야기라 웹에서는 뺀다
