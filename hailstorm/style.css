@@ -1,0 +1,45 @@
+/* Shutterstorm 지원 페이지·처리방침이 같이 쓰는 꼴. 색은 게임 아트(밤하늘·폭풍 눈의 빛)에서 왔다 — kgbvsfbi/firstComMono#3339 */
+:root {
+  --bg: #0b111c;
+  --panel: #121a29;
+  --line: #24304a;
+  --text: #e9eef7;
+  --muted: #9aa6bd;
+  --glow: #f3cf74;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+}
+a { color: var(--glow); }
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+
+.nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
+.nav .me { display: inline-flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; font-weight: 700; letter-spacing: .04em; }
+.nav .me img { border-radius: 8px; }
+
+.hero { display: block; width: 100%; height: auto; aspect-ratio: 3840 / 1646; border-radius: 14px; }
+.status { text-align: center; margin: 36px 0 8px; }
+.badge {
+  display: inline-block; padding: 6px 14px; border: 1px solid var(--glow); border-radius: 999px;
+  color: var(--glow); font-size: .85rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+}
+.status p { color: var(--muted); margin: 14px 0 0; }
+.cards { display: grid; gap: 12px; margin: 36px 0; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+.card h2 { margin: 0 0 4px; font-size: 1rem; }
+.card p { margin: 0; color: var(--muted); }
+
+.doc h1 { font-size: 1.6rem; line-height: 1.3; margin: 12px 0 8px; }
+.doc h2 { font-size: 1.1rem; margin: 32px 0 8px; }
+.doc p, .doc li { color: #cdd5e3; }
+.doc ul { padding-left: 1.2em; }
+.doc code { font-size: .9em; background: var(--panel); padding: 1px 5px; border-radius: 4px; }
+
+footer { border-top: 1px solid var(--line); margin-top: 48px; padding: 20px 0 32px; color: var(--muted); font-size: .85rem; }
+footer a { color: var(--muted); }
