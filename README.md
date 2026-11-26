@@ -8,13 +8,14 @@ GitHub Pages(`main` 브랜치 `/`)로 `https://www.firstcomstudio.com/` 에 뜬�
 ```
 app-ads.txt             # AdMob 판매자 인증 — 도메인 루트에 있어야 한다
 index.html              # 스튜디오 메인 — 소개·Productions(앱 페이지로 가는 길)·문의 (kgbvsfbi/firstComMono#3113)
-assets/site.css         # 처리방침 페이지 공통 스타일(Hailstorm — Tessera 처리방침은 tessera/style.css)
+assets/site.css         # 처리방침 페이지 공통 스타일(Shutterstorm — Tessera 처리방침은 tessera/style.css)
 assets/favicon.svg      # 둥근 육각 파비콘
 assets/tessera-icon.png # 메인 Productions의 Tessera 아이콘(256 px)
 assets/tessera-share-card.jpg # 공유 링크 카드 그림(1200×630, 실제로 반쯤 푼 판 — 모든 언어 페이지가 같이 쓴다)
 assets/tessera-touch-icon.png # 공유 링크 페이지의 apple-touch-icon(180 px)
-hailstorm/index.html    # Hailstorm 앱 페이지 (support_url · marketing_url)
-hailstorm/privacy.html  # Hailstorm 개인정보 처리방침 (privacy_url)
+shutterstorm/index.html # Shutterstorm 앱 페이지 (support_url · marketing_url)
+shutterstorm/privacy.html # Shutterstorm 개인정보 처리방침 (privacy_url)
+hailstorm/               # 옛 주소 — 두 페이지 모두 shutterstorm/으로 넘긴다(스토어에 걸린 옛 링크용)
 tessera/index.html      # Tessera 앱 페이지, 영어 (support_url · marketing_url) — tessera/build.py가 뽑는다 (kgbvsfbi/firstComMono#3287)
 tessera/<lang>/         # 같은 페이지의 언어별 판 19개 — 목록은 앱 로케일. 문구·화면·색은 모노레포의 스토어 메타·앱 문구·palette.gd에서
 tessera/build.py        # 위 20개 페이지와 style.css·img/를 뽑는다: python3 tessera/build.py <모노레포 경로>
